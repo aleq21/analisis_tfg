@@ -32,7 +32,7 @@ try:
     # Distribución de Precios
     plt.figure(figsize=(10, 5))
     sns.histplot(df['price'], kde=True, bins=50, color='skyblue')
-    plt.title('Distribución de Precios')
+    plt.title('Distribución de precios')
     plt.xlabel('Precio')
     plt.ylabel('Frecuencia')
     plt.savefig('../graficos/eda/distribucion_precios.png', dpi=300)
@@ -41,7 +41,7 @@ try:
     # Distribución de Kilometraje
     plt.figure(figsize=(10, 5))
     sns.histplot(df['kms'], bins=100, kde=False, color='salmon')
-    plt.title('Distribución de Kilometraje')
+    plt.title('Distribución del kilometraje')
     plt.xlabel('Kilómetros')
     plt.ylabel('Frecuencia')
     plt.savefig('../graficos/eda/distribucion_kilometraje.png', dpi=300)
@@ -50,7 +50,7 @@ try:
     # Distribución de Potencia
     plt.figure(figsize=(10, 5))
     sns.histplot(df['power'], bins=40, color='green')
-    plt.title('Distribución de Potencia (CV)')
+    plt.title('Distribución de potencia (CV)')
     plt.xlabel('Potencia')
     plt.ylabel('Frecuencia')
     plt.savefig('../graficos/eda/distribucion_potencia.png', dpi=300)
@@ -59,7 +59,7 @@ try:
     # Distribución de Año de Fabricación
     plt.figure(figsize=(10, 5))
     sns.histplot(df['year'], kde=False, color='gold', discrete=True)
-    plt.title('Distribución de Año de Fabricación')
+    plt.title('Distribución de los años de fabricación')
     plt.xlabel('Año')
     plt.ylabel('Frecuencia')
     plt.savefig('../graficos/eda/distribucion_anno_fabricacion.png', dpi=300)
@@ -69,7 +69,7 @@ try:
     # Número de Vehículos por Marca
     plt.figure(figsize=(12, 10))
     sns.countplot(y='make', data=df, order=df['make'].value_counts().index, hue='make', palette='viridis', legend=False)
-    plt.title('Número de Vehículos por Marca')
+    plt.title('Número de vehículos por marca')
     plt.xlabel('Frecuencia')
     plt.ylabel('Marca')
     plt.savefig('../graficos/eda/numero_vehiculos_por_marca.png', dpi=300)
@@ -78,8 +78,8 @@ try:
     # Número de Vehículos por Combustible
     plt.figure(figsize=(10, 5))
     sns.countplot(x='fuel', data=df, order=df['fuel'].value_counts().index, hue='fuel', palette='plasma', legend=False)
-    plt.title('Número de Vehículos por Combustible')
-    plt.xlabel('Tipo de Combustible')
+    plt.title('Número de vehículos por tipo de combustible')
+    plt.xlabel('Tipo de combustible')
     plt.ylabel('Frecuencia')
     plt.savefig('../graficos/eda/numero_vehiculos_por_combustible.png', dpi=300)
     plt.show()
@@ -87,13 +87,12 @@ try:
     # Número de Vehículos por Tipo de Transmisión
     plt.figure(figsize=(10, 5))
     sns.countplot(x='shift', data=df, order=df['shift'].value_counts().index, hue='shift', palette='magma', legend=False)
-    plt.title('Número de Vehículos por Tipo de Transmisión')
+    plt.title('Número de vehículos por tipo de transmisión')
     plt.xlabel('Transmisión')
     plt.ylabel('Frecuencia')
     plt.savefig('../graficos/eda/numero_vehiculos_por_transmision.png', dpi=300)
     plt.show()
 
-    # Análisis bivariado
     # Relación entre variables numéricas
     # Calcular la matriz de correlación solo para columnas numéricas
     corr_matrix = df[['price', 'kms', 'power', 'year']].corr()
@@ -101,14 +100,15 @@ try:
     # Visualizar la matriz de correlación con un mapa de calor
     plt.figure(figsize=(8, 6))
     sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', fmt=".2f")
-    plt.title('Mapa de Calor de Correlación de Variables Numéricas')
+    plt.title('Mapa de calor de correlación de las variables numéricas')
+    plt.savefig('../graficos/eda/mapa_calor_correlacion.png', dpi=300)
     plt.show()
 
     plt.figure(figsize=(12, 6))
     sns.barplot(x='fuel', y='price', hue='shift', data=df, estimator='mean', errorbar='sd', palette='pastel')
-    plt.title('Precio Medio según Combustible y Transmisión')
-    plt.xlabel('Tipo de Combustible')
-    plt.ylabel('Precio Medio')
+    plt.title('Precio medio según combustible y transmisión')
+    plt.xlabel('Tipo de combustible')
+    plt.ylabel('Precio medio')
     plt.legend(title='Transmisión')
     plt.tight_layout()
     plt.savefig('../graficos/eda/precio_medio_combustible_transmision.png', dpi=300)
@@ -135,9 +135,9 @@ try:
                   alpha=0.8,
                   color=sns.color_palette("pink", len(media_precio_por_marca)))
 
-    plt.title('Precio Medio de Venta por Marca', fontsize=18)
+    plt.title('Precio medio por marca', fontsize=18)
     plt.axis('off')
-    plt.savefig('../graficos/eda/precio_medio_venta_por_marca.png', dpi=300)
+    plt.savefig('../graficos/eda/precio_medio_por_marca.png', dpi=300)
     plt.show()
 
     # Fecha media de fabricación de los vehículos por marca
@@ -148,9 +148,9 @@ try:
     # Crear el gráfico de barras vertical
     plt.figure(figsize=(16, 8))
     barplot = sns.barplot(x='make', y='year', hue='make', data=media_anno_fabricacion, palette='bright', legend=False)
-    plt.title('Fecha Media de Fabricación por Marca de Vehículo', fontsize=16)
+    plt.title('Fecha media de fabricación por marca de vehículo', fontsize=16)
     plt.xlabel('Marca', fontsize=11)
-    plt.ylabel('Año Medio de Fabricación', fontsize=12)
+    plt.ylabel('Año medio de fabricación', fontsize=12)
     plt.xticks(rotation=45, ha='right')
 
     plt.ylim(bottom=media_anno_fabricacion['year'].min() - 1, top=media_anno_fabricacion['year'].max() + 1)
@@ -182,9 +182,9 @@ try:
 
     barplot = sns.barplot(x='count', y='modeloEntero', hue='modeloEntero', data=top_10_models, palette='rocket', legend=False)
 
-    plt.title('Top 10 Modelos de Vehículos más Frecuentes en Venta', fontsize=16)
-    plt.xlabel('Número de Vehículos en Venta', fontsize=12)
-    plt.ylabel('Modelo del Vehículo', fontsize=12)
+    plt.title('Top 10 modelos de vehículos más frecuentes en venta', fontsize=16)
+    plt.xlabel('Número de vehículos en venta', fontsize=12)
+    plt.ylabel('Modelo del vehículo', fontsize=12)
 
     for index, value in enumerate(top_10_models['count']):
         plt.text(value, index, f' {value}', va='center')
