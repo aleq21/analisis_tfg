@@ -41,6 +41,17 @@ try:
     print(df['power'].describe())
     print(df['kms'].describe())
 
+    # Mostrar la informacion de los vehiculos de la marca KTM
+    print("\nInformación de los vehículos de la marca KTM:")
+    print(df[df['make'] == 'KTM'].info())
+    print("\nPrecio medio de los vehículos de la marca KTM:")
+    print(df[df['make'] == 'KTM']['price'].mean())
+    print("\nNúmero de vehículos de la marca KTM:")
+    print(df[df['make'] == 'KTM'].shape[0])
+    print("\nNombres del modelo de KTM:")
+    print(df[df['make'] == 'KTM']['model'].unique())
+
+
 
     # Mostrar el número de valores únicos por columna
     print("\nNúmero de valores únicos por columna:")

@@ -2,7 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import squarify
-
+import plotly.express as px
 
 ruta_del_archivo = '../datasets/processed/dataset-vehiculos-limpio.csv'
 
@@ -30,22 +30,37 @@ try:
 
     # Visualización de la distribución de las variables numéricas
     # Distribución de Precios
-    plt.figure(figsize=(10, 5))
-    sns.histplot(df['price'], kde=True, bins=50, color='skyblue')
-    plt.title('Distribución de precios')
-    plt.xlabel('Precio')
-    plt.ylabel('Frecuencia')
-    plt.savefig('../graficos/eda/distribucion_precios.png', dpi=300)
-    plt.show()
+    fig = px.box(df, y='price', title='Distribución de precios')
+    fig.update_layout(
+        yaxis_title='Precio',
+    )
+    fig.write_image('../graficos/eda/distribucion_precios.png', scale=3)  # Guarda el gráfico
+    fig.show()
+
+    # Marca y modelo con el precio más alto
+    marca_modelo_precio_max = df.loc[df['price'].idxmax(), ['make', 'model', 'price']]
+    print(f"Marca y modelo con el precio más alto: {marca_modelo_precio_max['make']} {marca_modelo_precio_max['model']} - Precio: {marca_modelo_precio_max['price']} €")
 
     # Distribución de Kilometraje
-    plt.figure(figsize=(10, 5))
-    sns.histplot(df['kms'], bins=100, kde=False, color='salmon')
-    plt.title('Distribución del kilometraje')
-    plt.xlabel('Kilómetros')
-    plt.ylabel('Frecuencia')
-    plt.savefig('../graficos/eda/distribucion_kilometraje.png', dpi=300)
-    plt.show()
+
+    print(df['kms'].max())
+    porcentaje_menor_200k = (df[df['kms'] < 200000].shape[0] / df.shape[0]) * 100
+    print(f"Porcentaje de vehículos con menos de 200,000 km: {porcentaje_menor_200k:.2f}%")
+    porcentaje_menor_130k = (df[df['kms'] < 130000].shape[0] / df.shape[0]) * 100
+    print(f"Porcentaje de vehículos con menos de 130,000 km: {porcentaje_menor_130k:.2f}%")
+
+    fig = px.box(df, x='kms', title='Distribución del kilometraje',
+                 color_discrete_sequence=['salmon'])
+
+    fig.update_layout(
+        xaxis_title='Kilómetros',
+        yaxis_title='',
+        template='simple_white'
+    )
+
+    fig.write_image('../graficos/eda/boxplot_kilometraje_plotly.png', scale=3)
+    fig.show()
+
 
     # Distribución de Potencia
     plt.figure(figsize=(10, 5))
@@ -75,6 +90,15 @@ try:
     plt.savefig('../graficos/eda/numero_vehiculos_por_marca.png', dpi=300)
     plt.show()
 
+    # Ver 8 marcas con más vehículos en venta con su numero y porcentaje
+    marcas_mas_ventas = df['make'].value_counts().head(8)
+    print("\nMarcas con más vehículos en venta:")
+    print(marcas_mas_ventas)
+    porcentaje_ventas = (marcas_mas_ventas / df.shape[0]) * 100
+    print("\nPorcentaje de vehículos en venta por marca:")
+    print(porcentaje_ventas)
+
+
     # Número de Vehículos por Combustible
     plt.figure(figsize=(10, 5))
     sns.countplot(x='fuel', data=df, order=df['fuel'].value_counts().index, hue='fuel', palette='plasma', legend=False)
@@ -83,6 +107,14 @@ try:
     plt.ylabel('Frecuencia')
     plt.savefig('../graficos/eda/numero_vehiculos_por_combustible.png', dpi=300)
     plt.show()
+
+    # Numero de vehiculos hibridos
+    numero_hibridos = df[df['fuel'] == 'Híbrido'].shape[0]
+    print(f"Número de vehículos híbridos: {numero_hibridos}")
+
+    # unknown en combustible
+    numero_unknown_combustible = df[df['fuel'] == 'unknown'].shape[0]
+    print(f"Número de vehículos con combustible 'unknown': {numero_unknown_combustible}")
 
     # Número de Vehículos por Tipo de Transmisión
     plt.figure(figsize=(10, 5))
@@ -129,13 +161,15 @@ try:
     labels = [f"{row['make']}\n({row['price']:,.0f} €)" for index, row in media_precio_por_marca.iterrows()]
 
     # Crear el gráfico
-    plt.figure(figsize=(26, 13))
+    plt.figure(figsize=(26, 16))
     squarify.plot(sizes=media_precio_por_marca['price'],
                   label=labels,
                   alpha=0.8,
-                  color=sns.color_palette("pink", len(media_precio_por_marca)))
+                  color=sns.color_palette("Paired", len(media_precio_por_marca)),
+                  text_kwargs={'fontsize': 20}
+                  )
 
-    plt.title('Precio medio por marca', fontsize=18)
+    plt.title('Precio medio por marca', fontsize=24)
     plt.axis('off')
     plt.savefig('../graficos/eda/precio_medio_por_marca.png', dpi=300)
     plt.show()
