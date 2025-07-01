@@ -32,7 +32,7 @@ preprocessor = ColumnTransformer([
     ('cat', OneHotEncoder(handle_unknown='ignore', sparse_output=False), cat_features)
 ], remainder='passthrough')
 
-# Pipeline con XGBoost (GPU)
+# Pipeline con XGBoost
 model = Pipeline([
     ('preprocessing', preprocessor),
     ('regressor', XGBRegressor(tree_method='hist', device='cuda', n_estimators=1000, random_state=42))

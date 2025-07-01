@@ -41,7 +41,7 @@ try:
     print(df['power'].describe())
     print(df['kms'].describe())
 
-    # Mostrar la informacion de los vehiculos de la marca KTM
+    # Mostrar la información de los vehículos de la marca KTM
     print("\nInformación de los vehículos de la marca KTM:")
     print(df[df['make'] == 'KTM'].info())
     print("\nPrecio medio de los vehículos de la marca KTM:")
@@ -94,7 +94,6 @@ try:
     df.loc[(df['model'] == 'A110') & (df['year'] == 1980), 'power'] = 80
     df.loc[(df['model'] == 'S8') & (df['year'] == 2000), 'power'] = 571
 
-    # Cambiar valor otros por Híbrido en los tipos de combustible
     df['fuel'] = df['fuel'].replace('Otros', 'Híbrido')
 
     keywords = ['PHEV', 'HEV', 'EV', 'Hybrid', 'mhev', 'kw', 'kwh', '0h', '5h', 'electric', 'hibrido', 'híbrido']

@@ -227,7 +227,5 @@ try:
     plt.savefig('../graficos/eda/top_10_modelos_vehiculos.png', dpi=300)
     plt.show()
 
-
-
 except FileNotFoundError:
     print(f"Error: No se encontró el archivo en la ruta '{ruta_del_archivo}'. Asegúrate de que la ruta es correcta.")
